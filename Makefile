@@ -37,7 +37,7 @@ coverage:
 	$(GOCMD) tool cover -html=coverage.out
 
 run:
-	$(GOBUILD) $(LDFLAGS) -o $(BINARY_NAME) -v
+	$(GOBUILD) $(LDFLAGS) -o $(BINARY_NAME) -v $(MAIN_PACKAGE)
 	./$(BINARY_NAME)
 
 deps:
@@ -52,37 +52,14 @@ fmt:
 lint:
 	golangci-lint run
 
-# Cross compilation
-build-linux:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) $(LDFLAGS) -o $(BINARY_UNIX) -v
-
-# Installation
-install: build
-	mv $(BINARY_NAME) $(GOPATH)/bin
-
-# Docker
-docker-build:
-	docker build -t zip .
-
-docker-run:
-	docker run -it --rm zip
-
-# Help
 help:
-	@echo "Make targets:"
-	@echo "  build        - Build the zip binary"
-	@echo "  clean        - Clean build artifacts"
-	@echo "  test         - Run tests"
-	@echo "  coverage     - Run tests with coverage"
-	@echo "  run          - Build and run zip"
-	@echo "  deps         - Get dependencies"
-	@echo "  vet          - Run go vet"
-	@echo "  fmt          - Run go fmt"
-	@echo "  lint         - Run golangci-lint"
-	@echo "  build-linux  - Cross-compile for Linux"
-	@echo "  install      - Install zip to GOPATH/bin"
-	@echo "  docker-build - Build Docker image"
-	@echo "  docker-run   - Run zip in a Docker container"
-
-# Default target
-default: build
+	@echo "Available targets:"
+	@echo "  build     - Build the binary"
+	@echo "  clean     - Clean build files"
+	@echo "  test      - Run tests"
+	@echo "  coverage  - Generate test coverage"
+	@echo "  run       - Build and run"
+	@echo "  deps      - Get dependencies"
+	@echo "  vet       - Run go vet"
+	@echo "  fmt       - Run go fmt"
+	@echo "  lint      - Run linter"
